@@ -1,10 +1,10 @@
-var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
+var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize) {
 	var minSize = Math.min(width, height);
 	height = width = minSize;
 	
     var radius = width / 2,
         x = d3.scale.linear().range([0, 2 * Math.PI]),
-        y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]),
+        y = d3.scale.pow().exponent(1.3).domain([0.3, 1]).range([0, radius]),
         padding = 5,
         duration = 1000;
 
@@ -13,6 +13,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
     if(mainTitle.length > 0) {
     	var mainTitleEl = div.append("h1")
     		.attr("id", "main")
+        .attr("text-align", "center")
     		.text(mainTitle);
 	}	
 
@@ -24,17 +25,13 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
 
     var partition = d3.layout.partition()
         .sort(null)
-        .value(function(d) {
-	        //return 5.8 - d.depth; 
-	        return d.value;
-        	//return d.depth == 0 ? 1 : 1/d.parent.children.size; 
-        });
+    ;
 
     var arc = d3.svg.arc()
         .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
         .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
         .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
-        .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+        .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)) - (d.depth == 1 ? radius/10 : 0); });
 
     function isParentOf(p, c) {
       if (p === c) return true;
@@ -47,7 +44,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
     }
 
     function colour(d) {
-      if (d.colour == undefined && d.children) {
+      if (d.depth != 0 && d.colour == undefined && d.children) {
         // There is a maximum of two children!
         var colours = d.children.map(colour);
         var sum = { r: 0, g: 0, b: 0 };
@@ -109,7 +106,9 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
           .attr("d", arc)
           .attr("fill-rule", "evenodd")
           .style("fill", colour)
-          .on("click", click);
+          .style("stroke", "#000000")
+          .style("stroke-width", 1.5)
+          ;
 
       var text = vis.selectAll("text").data(nodes);
       var textEnter = text.enter().append("text")
@@ -126,7 +125,8 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle) {
                 rotate = angle;
             return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
           })
-          .on("click", click);
+          .attr("font-size", function(d) { return fontSize + "px"; })
+          ;
       textEnter.append("tspan")
           .attr("x", 0)
           .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });

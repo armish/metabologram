@@ -11,7 +11,7 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(el, x, instance) {
-    initializeCoffeeWheel(x.treeData, el, instance.width, instance.height, x.main);
+    initializeCoffeeWheel(x.treeData, el, instance.width, instance.height, x.main, x.fontSize);
     instance["x"] = x;
   },
 

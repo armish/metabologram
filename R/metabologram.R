@@ -5,9 +5,13 @@
 #' @import htmlwidgets
 #'
 #' @export
-metabologram <- function(treeData, width="400", height="400", main="") {
+metabologram <- function(treeData, width="400", height="400", main="", showLegend=FALSE, legendBreaks=NULL, legendColors=NULL, fontSize=12) {
   x <- list(
     treeData = treeData,
+    showLegend = showLegend,
+    legendBreaks = legendBreaks,
+    legendColors = legendColors,
+    fontSize = fontSize,
     main = main
   );
 
@@ -39,44 +43,49 @@ renderMetabologram <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' Sample data for wheel initialization
 #'
 #' @export
-sampleWheelData <- list(
+sampleMetabologramData <- list(
   list(
-    name="R",
+    name="Metabolites",
+    colour="#FFDDDD",
     children=list(
-      list(name="R_1", colour="#110000"),
-      list(name="R_3", colour="#330000"),
-      list(name="R_5", colour="#550000"),
-      list(name="R_7", colour="#770000"),
-      list(name="R_9", colour="#990000"),
-      list(name="R_b", colour="#bb0000"),
-      list(name="R_d", colour="#dd0000"),
-      list(name="R_f", colour="#ff0000")
+      list(name="M_1", colour="#0000FF"),
+      list(name="M_5", colour="#F3F3FF"),
+      list(name="M_9", colour="#FFF3F3"),
+      list(name="M_b", colour="#FFDDDD"),
+      list(name="M_f", colour="#FF8585")
     )
   ),
   list(
-    name="G",
+    name="Genes",
+    colour="#FF6E6E",
     children=list(
-      list(name="G_1", colour="#001100"),
-      list(name="G_3", colour="#003300"),
-      list(name="G_5", colour="#005500"),
-      list(name="G_7", colour="#007700"),
-      list(name="G_9", colour="#009900"),
-      list(name="G_b", colour="#00bb00"),
-      list(name="G_d", colour="#00dd00"),
-      list(name="G_f", colour="#00ff00")
-    )
-  ),
-  list(
-    name="B",
-    children=list(
-      list(name="B_1", colour="#000011"),
-      list(name="B_3", colour="#000033"),
-      list(name="B_5", colour="#000055"),
-      list(name="B_7", colour="#000077"),
-      list(name="B_9", colour="#000099"),
-      list(name="B_b", colour="#0000bb"),
-      list(name="B_d", colour="#0000dd"),
-      list(name="B_f", colour="#0000ff")
+      list(name="G_1", colour="#B1B1FF"),
+      list(name="G_3", colour="#DDDDFF"),
+      list(name="G_5", colour="#F3F3FF"),
+      list(name="G_7", colour="#FF6E6E"),
+      list(name="G_9", colour="#8585FF"),
+      list(name="G_b", colour="#FF1616"),
+      list(name="G_d", colour="#FF6E6E"),
+      list(name="G_f", colour="#FF0000")
     )
   )
+);
+
+#' Sample breaks data
+#'
+#' @export
+sampleMetabologramBreaks <- c(
+  -3.00, -2.75, -2.50, -2.25, -2.00, -1.75, -1.50, -1.25, -1.00, 
+  -0.75, -0.50, -0.25, 0.00,  0.25,  0.50,  0.75,  1.00,  
+  1.25,  1.50,  1.75,  2.00,  2.25,  2.50,  2.75, 3.00
+);
+
+#' Sample colors data
+#'
+#' @export
+sampleMetabologramColors <- c(
+  "#0000FF", "#1616FF", "#2C2CFF", "#4242FF", "#5858FF", "#6E6EFF", "#8585FF",
+  "#9B9BFF", "#B1B1FF", "#C7C7FF", "#DDDDFF", "#F3F3FF", "#FFF3F3", "#FFDDDD",
+  "#FFC7C7", "#FFB1B1", "#FF9B9B", "#FF8585", "#FF6E6E", "#FF5858", "#FF4242",
+  "#FF2C2C", "#FF1616", "#FF0000"
 );
