@@ -3,6 +3,8 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
+    el.innerHTML = "";
+    
     return {
       el: el,
       width: width,

@@ -9,7 +9,6 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
 	  var minSize = Math.min(width, height);
     minSize -= minSize/20;
 
-
     var div = d3.select(el);
     if(mainTitle.length > 0) {
       var mainTitleEl = div.append("h1")
@@ -22,15 +21,15 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
 
 	  height = width = Math.max(minSize, 0);
 	
-    var radius = width / 2,
+    var radius = (width/2),
         x = d3.scale.linear().range([0, 2 * Math.PI]),
-        y = d3.scale.pow().exponent(1.3).domain([0.3, 1]).range([0, radius]),
+        y = d3.scale.pow().exponent(1.3).domain([0.3, 1]).range([0, radius*.99]),
         padding = 0,
         duration = 1000;
 
         var svg = div.append("svg")
-        .attr("width", (showLegend ? orgWidth : width) + padding * 2)
-        .attr("height", height + padding * 2);
+        .attr("width", (showLegend ? orgWidth : width))
+        .attr("height", height);
 
         var vis = svg.append("g").attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
