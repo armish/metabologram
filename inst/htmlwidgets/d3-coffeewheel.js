@@ -43,6 +43,31 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
         .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)) - (d.depth == 1 ? radius/10 : 0); });
 
+
+    function extractProperties(d) {
+      var hideProperties = ["x", "y", "dx", "dy", "parent", "value", "colour", "depth", "children"];
+      var keys = Object.keys(d);
+
+      var content = "";
+      for(var i=0; i < keys.length; i++) {
+        var aKey = keys[i];
+
+        var show = true;
+        for(var j=0; j < hideProperties.length; j++) {
+          if(hideProperties[j] == aKey) { 
+            show = false;
+            break;
+          }
+        }
+
+        if(show) {
+          content += "<b>" + aKey + "</b>: " + d[aKey] + "<br>";
+        }
+      }
+
+      return content;
+    }
+
     function isParentOf(p, c) {
       if (p === c) return true;
       if (p.children) {
@@ -136,6 +161,11 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
             return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
           })
           .style("font-size", function(d) { return fontSize + "px"; })
+          .attr("title", "Something something...")
+          .each(function(d, i) {
+            var content = extractProperties(d);
+            $(this).tooltipster({ content: $(content) }); 
+          })
           ;
       textEnter.append("tspan")
           .attr("x", function(d) { return x(d.x + d.dx / 2) > Math.PI ? -5 : 5 })
