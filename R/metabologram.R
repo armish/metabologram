@@ -5,12 +5,13 @@
 #' @import htmlwidgets
 #'
 #' @export
-metabologram <- function(treeData, width=600, height=500, main="", showLegend=FALSE, legendBreaks=NULL, legendColors=NULL, fontSize=12) {
+metabologram <- function(treeData, width=600, height=500, main="", showLegend=FALSE, legendBreaks=NULL, legendColors=NULL, fontSize=12, legendText="Legend") {
   x <- list(
     treeData = treeData,
     showLegend = showLegend,
     legendBreaks = legendBreaks,
     legendColors = legendColors,
+    legendText = legendText,
     fontSize = fontSize,
     main = main
   );

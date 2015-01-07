@@ -1,4 +1,4 @@
-var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize, showLegend, legendColors, legendBreaks) {
+var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize, showLegend, legendColors, legendBreaks, legendText) {
     var legendWidth = 100;
 
     var orgWidth = width;
@@ -161,7 +161,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
             .style("stroke-width", 1.5)
           ;
 
-          var breakTxt = lviz.selectAll("text").data(legendBreaks);
+          var breakTxt = lviz.append("g").selectAll("text").data(legendBreaks);
           breakTxt.enter().append("text")
             .attr("dx", lx + fontSize*3)
             .attr("dy", function(d, i) { return ly(i) + fontSize/3; })
@@ -169,6 +169,20 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
             .style("font-weight", "bold")
             .style("color", "#000")
             .text(function(d) { return d; });
+
+          var legX = lx - fontSize;
+          var legY = ly((legendBreaks.length-1)/2);
+          var legendTitle = lviz.append("g").selectAll("text").data([legendText]);
+          legendTitle.enter().append("text")
+            .attr("dx", legX)
+            .attr("dy", legY)
+            .attr("transform", "rotate(-90 " + legX + "," + legY + ")")
+            .style("text-anchor", "middle")
+            .style("font-size", fontSize + "px")
+            .style("font-weight", "bold")
+            .style("color", "#000")
+            .text(function(d) { return d; })
+          ;
       }
 
       function click(d) {
