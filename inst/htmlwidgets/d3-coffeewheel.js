@@ -1,27 +1,38 @@
-var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize) {
-	var minSize = Math.min(width, height);
-	height = width = minSize;
+var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize, showLegend, legendColors, legendBreaks) {
+    var legendWidth = 100;
+
+    var orgWidth = width;
+    if(showLegend) {
+      width -= legendWidth;
+    }
+
+	  var minSize = Math.min(width, height);
+    minSize -= minSize/20;
+
+
+    var div = d3.select(el);
+    if(mainTitle.length > 0) {
+      var mainTitleEl = div.append("h1")
+        .attr("id", "main")
+        .style("text-align", "center")
+        .text(mainTitle);
+
+      minSize -= 50;
+    } 
+
+	  height = width = Math.max(minSize, 0);
 	
     var radius = width / 2,
         x = d3.scale.linear().range([0, 2 * Math.PI]),
         y = d3.scale.pow().exponent(1.3).domain([0.3, 1]).range([0, radius]),
-        padding = 5,
+        padding = 0,
         duration = 1000;
 
-    var div = d3.select(el);
+        var svg = div.append("svg")
+        .attr("width", (showLegend ? orgWidth : width) + padding * 2)
+        .attr("height", height + padding * 2);
 
-    if(mainTitle.length > 0) {
-    	var mainTitleEl = div.append("h1")
-    		.attr("id", "main")
-        .attr("text-align", "center")
-    		.text(mainTitle);
-	}	
-
-    var vis = div.append("svg")
-        .attr("width", width + padding * 2)
-        .attr("height", height + padding * 2)
-        .append("g")
-        .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
+        var vis = svg.append("g").attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
     var partition = d3.layout.partition()
         .sort(null)
@@ -125,11 +136,40 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
                 rotate = angle;
             return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
           })
-          .attr("font-size", function(d) { return fontSize + "px"; })
+          .style("font-size", function(d) { return fontSize + "px"; })
           ;
       textEnter.append("tspan")
-          .attr("x", 0)
+          .attr("x", function(d) { return x(d.x + d.dx / 2) > Math.PI ? -5 : 5 })
           .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+
+
+      if(showLegend && legendBreaks && legendColors) {
+          var ly = d3.scale.linear().domain([0, legendBreaks.length-1]).range([0+height/20, height-height/20]);
+          var rects = vis.selectAll("rect").data(legendBreaks);
+          var lx = (orgWidth-legendWidth) + legendWidth/5;
+
+          var lviz = svg.append("g");
+
+          var colorBoxes = lviz.selectAll("rect").data(legendColors);
+          colorBoxes.enter().append("rect")
+            .attr("x", lx)
+            .attr("y", function(d, i) { return ly(i); })
+            .attr("width", 30)
+            .attr("height", function(d, i) { return ly(i) - ly(i-1); })
+            .style("fill", function(d) { return d; })
+            .style("stroke", "#000")
+            .style("stroke-width", 1.5)
+          ;
+
+          var breakTxt = lviz.selectAll("text").data(legendBreaks);
+          breakTxt.enter().append("text")
+            .attr("dx", lx + fontSize*3)
+            .attr("dy", function(d, i) { return ly(i) + fontSize/3; })
+            .style("font-size", fontSize + "px")
+            .style("font-weight", "bold")
+            .style("color", "#000")
+            .text(function(d) { return d; });
+      }
 
       function click(d) {
         path.transition()

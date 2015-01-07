@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-metabologram <- function(treeData, width="400", height="400", main="", showLegend=FALSE, legendBreaks=NULL, legendColors=NULL, fontSize=12) {
+metabologram <- function(treeData, width=600, height=500, main="", showLegend=FALSE, legendBreaks=NULL, legendColors=NULL, fontSize=12) {
   x <- list(
     treeData = treeData,
     showLegend = showLegend,
@@ -28,7 +28,7 @@ metabologram <- function(treeData, width="400", height="400", main="", showLegen
 #' Widget output function for use in Shiny
 #'
 #' @export
-metabologramOutput <- function(outputId, width = '400', height = '400') {
+metabologramOutput <- function(outputId, width = 600, height = 500) {
   shinyWidgetOutput(outputId, 'metabologram', width, height, package = 'metabologram');
 }
 
