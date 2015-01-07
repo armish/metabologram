@@ -17,7 +17,8 @@ metabologram(
 	showLegend=TRUE,
 	fontSize=12,
 	legendBreaks=sampleMetabologramBreaks,
-	legendColors=sampleMetabologramColors
+	legendColors=sampleMetabologramColors,
+  legendText="Legend Title"
 );
 ```
 
