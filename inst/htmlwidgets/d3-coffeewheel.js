@@ -1,4 +1,6 @@
 var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSize, showLegend, legendColors, legendBreaks, legendText) {
+    el.innerHTML = "";
+    
     var legendWidth = 100;
 
     var orgWidth = width;
