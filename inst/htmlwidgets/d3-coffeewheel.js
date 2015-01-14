@@ -194,7 +194,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
 
           var breakTxt = lviz.append("g").selectAll("text").data(legendBreaks);
           breakTxt.enter().append("text")
-            .attr("dx", lx + fontSize*3)
+            .attr("dx", (lx + 30) + (fontSize*2))
             .attr("dy", function(d, i) { return ly(i) + fontSize/3; })
             .style("font-size", fontSize + "px")
             .style("font-weight", "bold")
