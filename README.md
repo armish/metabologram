@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/8220/armish/metabologram.svg)](http://dx.doi.org/10.5281/zenodo.13949)
+
 ## Install
 This package is currently not on CRAN, but you can install it from GitHub via `devtools`:
 
