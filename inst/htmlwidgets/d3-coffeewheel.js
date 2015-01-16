@@ -171,7 +171,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
           ;
       textEnter.append("tspan")
           .attr("x", function(d) { return x(d.x + d.dx / 2) > Math.PI ? -5 : 5 })
-          .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+          .text(function(d) { return d.depth ? d.name : ""; });
 
 
       if(showLegend && legendBreaks && legendColors) {
@@ -194,7 +194,7 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
 
           var breakTxt = lviz.append("g").selectAll("text").data(legendBreaks);
           breakTxt.enter().append("text")
-            .attr("dx", (lx + 30) + (fontSize*2))
+            .attr("dx", lx + 30 + fontSize)
             .attr("dy", function(d, i) { return ly(i) + fontSize/3; })
             .style("font-size", fontSize + "px")
             .style("font-weight", "bold")
@@ -233,7 +233,8 @@ var initializeCoffeeWheel = function(data, el, width, height, mainTitle, fontSiz
               };
             })
             .attrTween("transform", function(d) {
-              var multiline = (d.name || "").split(" ").length > 1;
+              //var multiline = (d.name || "").split(" ").length > 1;
+              var multiline = false; 
               return function() {
                 var angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
                     rotate = angle + (multiline ? -.5 : 0);
